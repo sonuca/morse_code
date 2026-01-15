@@ -2,7 +2,6 @@ package service
 
 import (
 	"strings"
-	"unicode"
 )
 
 var textMorseCode = map[string]string{
@@ -52,8 +51,7 @@ func Converter(input string) string {
 				return ""
 			}
 		}
-		text := strings.Join(decoded, "")
-		return CapitalizeFirst(text) // первая буква заглавная
+		return strings.Join(decoded, "")
 	}
 	// кодируем текст в Морзе
 	input = strings.ToUpper(input)
@@ -66,17 +64,4 @@ func Converter(input string) string {
 		}
 	}
 	return strings.Join(encoded, " ")
-}
-
-// делает первую букву заглавной, остальные маленькими
-func CapitalizeFirst(s string) string {
-	s = strings.TrimSpace(s)
-	if s == "" {
-		return ""
-	}
-	runes := []rune(s)
-	first := unicode.ToUpper(runes[0])
-	rest := string(runes[1:])
-	rest = strings.ToLower(rest)
-	return string(first) + rest
 }
