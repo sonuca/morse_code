@@ -29,7 +29,6 @@ func NewServer(logger *log.Logger) *Server {
 		WriteTimeout: 10 * time.Second, // таймаут для записи
 		IdleTimeout:  15 * time.Second, // таймаут ожидания следующего запроса
 	}
-	logger.Println("Сервер запущен")
 
 	// ссылка на сервер
 	return &Server{

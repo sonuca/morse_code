@@ -11,5 +11,6 @@ func main() {
 	logger := log.New(os.Stdout, "INFO: ", log.LstdFlags)
 	// создание сервера
 	srv := server.NewServer(logger)
+	logger.Println("Сервер запущен")
 	logger.Fatal(srv.HTTP.ListenAndServe())
 }

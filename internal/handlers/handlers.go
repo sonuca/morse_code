@@ -11,10 +11,22 @@ import (
 
 // возвращает HTML из файла index.html
 func HandleMain(w http.ResponseWriter, r *http.Request) {
+	// проверка метода
+	if r.Method != http.MethodGet {
+		http.Error(w, "метод не поддерживается", http.StatusMethodNotAllowed)
+		return
+	}
+
 	http.ServeFile(w, r, "index.html")
 }
 
 func HandleUpload(w http.ResponseWriter, r *http.Request) {
+	// проверка метода
+	if r.Method != http.MethodPost {
+		http.Error(w, "метод не поддерживается", http.StatusMethodNotAllowed)
+		return
+	}
+
 	// парсинг html-формы из файла index.html
 	err := r.ParseMultipartForm(10 << 20) // 10 MB
 	if err != nil {
@@ -25,7 +37,7 @@ func HandleUpload(w http.ResponseWriter, r *http.Request) {
 	// получение файла из формы
 	file, header, err := r.FormFile("myFile")
 	if err != nil {
-		http.Error(w, "ошибка при получении файла", http.StatusBadRequest)
+		http.Error(w, "ошибка при получении файла", http.StatusInternalServerError)
 		return
 	}
 	defer file.Close()
@@ -57,5 +69,9 @@ func HandleUpload(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// возврат результата пользователю
-	w.Write([]byte(result))
+	_, err = w.Write([]byte(result))
+	if err != nil {
+		http.Error(w, "ошибка при отправке ответа", http.StatusInternalServerError)
+		return
+	}
 }
